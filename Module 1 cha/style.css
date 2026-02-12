@@ -50,7 +50,32 @@
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
 }
-
+/* --- BOUTON TOGGLE THÈME --- */
+.theme-toggle {
+position: fixed;
+top: 20px;
+right: 20px;
+width: 60px;
+height: 60px;
+border-radius: 50%;
+background: var(--bg-secondary);
+border: 2px solid var(--primary-color);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+transition: all 0.3s ease;
+box-shadow: var(--shadow-md);
+z-index: 1000;
+}
+.theme-toggle:hover {
+transform: rotate(180deg) scale(1.1);
+box-shadow: var(--shadow-lg);
+}
+.theme-toggle:active {
+transform: rotate(180deg) scale(0.95);
+}
 /* --- STYLES GÉNÉRAUX --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
