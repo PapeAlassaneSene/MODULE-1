@@ -88,12 +88,15 @@ function initializeApp() {
         // Effacer le champ de saisie
         userInput.value = '';
 
-        // Simuler une réponse du bot (temporaire, Module 1)
-        // Dans les prochains modules, nous utiliserons l'IA
+        // Simuler la réflexion du bot
+        showTypingIndicator();
+        // Délai aléatoire entre 1 et 3 secondes
+        const delay = Math.random() * 2000 + 1000;
         setTimeout(() => {
-            const response = generateTemporaryResponse(message, currentMode);
-            addBotMessage(response);
-        }, 1000);
+        hideTypingIndicator();
+        const response = generateTemporaryResponse(message, currentMode);
+        addBotMessage(response);
+        }, delay);
     }
     // ============================================
     // TYPING INDICATOR
