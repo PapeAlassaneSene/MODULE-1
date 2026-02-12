@@ -197,6 +197,39 @@ body {
     border-color: var(--accent-color);
     box-shadow: var(--shadow-md);
 }
+.mode-btn {
+    /* ... styles existants ... */
+    position: relative;
+    overflow: hidden;
+}
+.mode-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+.mode-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+.mode-btn.active {
+    animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+    }
+}
+
 
 /* --- ZONE PRINCIPALE DU CHAT --- */
 .chat-main {
