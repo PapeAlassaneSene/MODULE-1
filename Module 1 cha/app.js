@@ -215,3 +215,28 @@ console.log(`
 `);
 
 console.log('💡 Astuce : Ouvre la console (F12) pour voir les logs de débogage !');
+
+    // ============================================
+    // GESTION DU THÈME CLAIR/SOMBRE
+    // ============================================
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // Charger le thème sauvegardé
+    const savedTheme = localStorage.getItem('chatbot-theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+    
+    // Événement de clic sur le bouton
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+            
+            // Sauvegarder la préférence
+            const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+            localStorage.setItem('chatbot-theme', currentTheme);
+            
+            console.log(`🎨
+ Thème changé : ${currentTheme}`);
+        });
+    }
