@@ -505,34 +505,66 @@ body {
         transform: translateX(0);
     }
 }
+
 /* Animation bounce pour l'avatar */
 .message-avatar {
     animation: bounceIn 0.5s ease;
 }
+
 @keyframes bounceIn {
     0% {
         transform: scale(0);
         opacity: 0;
     }
+
     50% {
         transform: scale(1.2);
     }
+
     100% {
         transform: scale(1);
         opacity: 1;
     }
 }
+
 .message-content {
     animation: fadeInScale 0.3s ease;
 }
+
 @keyframes fadeInScale {
     from {
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
     }
 }
 
+
+/* Effet au survol des messages */
+.message {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.message::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border-radius: var(--radius-md);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.message:hover::before {
+    opacity: 0.1;
+}
+
+.message:hover {
+    transform: translateY(-2px);
+}
