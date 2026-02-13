@@ -81,7 +81,7 @@ function initializeApp() {
         }
 
         console.log(`📤 Envoi du message : "${message}"`);
-        // Animation du bouton d'envoi
+            // Animation du bouton d'envoi
         sendBtn.classList.add('sending');
         setTimeout(() => sendBtn.classList.remove('sending'), 500);
 
