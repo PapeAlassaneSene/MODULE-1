@@ -1,0 +1,62 @@
+{
+  "etablissement": "Votre École",
+  "annee": "2024-2025",
+  "etudiants": [
+    {
+      "id": 1,
+      "nom": "Diop",
+      "prenom": "Amadou",
+      "age": 22,
+      "filiere": "Informatique",
+      "niveau": "Licence 3",
+      "photo": "👨‍💻",
+      "personnalite": {
+        "traits": ["créatif", "déterminé", "leader"],
+        "force": "résolution de problèmes",
+        "faiblesse": "perfectionnisme"
+      },
+      "funFacts": [
+        "A créé sa première app à 14 ans",
+        "Champion de hackathon 2023",
+        "Peut coder 12 heures d'affilée"
+      ],
+      "interets": ["IA", "blockchain", "football"],
+      "citation": "Le code est de la poésie pour les machines",
+      "statistiques": {
+        "projetsRealises": 23,
+        "cafeParJour": 4,
+        "lignesDeCode": 75000
+      }
+    },
+    {
+      "id": 2,
+      "nom": "VOTRE_NOM",
+      "prenom": "VOTRE_PRENOM",
+      "age": 21,
+      "filiere": "VOTRE_FILIERE",
+      "niveau": "Licence 2",
+      "photo": "👩‍💻",
+      "personnalite": {
+        "traits": ["trait1", "trait2", "trait3"],
+        "force": "votre force",
+        "faiblesse": "votre faiblesse"
+      },
+      "funFacts": [
+        "Fun fact 1",
+        "Fun fact 2",
+        "Fun fact 3"
+      ],
+      "interets": ["interet1", "interet2", "interet3"],
+      "citation": "Votre citation préférée",
+      "statistiques": {
+        "projetsRealises": 10,
+        "cafeParJour": 3,
+        "lignesDeCode": 50000
+      }
+    }
+  ],
+  "stats": {
+    "totalEtudiants": 2,
+    "filieres": ["Informatique"]
+  }
+}
