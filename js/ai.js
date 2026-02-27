@@ -1,0 +1,125 @@
+/* =================================================================
+   MODULE 4 : INTÉGRATION IA
+   Fichier: js/ai.js
+   
+   Ce fichier gère l'appel aux APIs LLM
+   ================================================================= */
+
+// ============================================
+// 1. CONFIGURATION
+// ============================================
+
+// Vérifier que la config est chargée
+if (typeof API_CONFIG === 'undefined') {
+    console.error('❌ config.js non chargé !');
+}
+
+const AI_CONFIG = {
+    maxTokens: 300,
+    temperature: 0.7,
+    timeout: 30000 // 30 secondes
+};
+
+// ============================================
+// 2. APPEL API HUGGING FACE
+// ============================================
+
+/**
+ * Appelle l'API Hugging Face
+ * @param {string} prompt - Le prompt à envoyer
+ * @returns {Promise<string>} La réponse générée
+ */
+async function appelHuggingFace(prompt) {
+    const { apiKey, model } = API_CONFIG.huggingface;
+    
+    if (!apiKey || apiKey.includes('COLLEZ')) {
+        throw new Error('Clé API Hugging Face non configurée !');
+    }
+    
+    try {
+        console.log('📤 Envoi à Hugging Face...');
+        
+        const response = await fetch(
+            `https://api-inference.huggingface.co/models/${model}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        max_new_tokens: AI_CONFIG.maxTokens,
+                        temperature: AI_CONFIG.temperature,
+                        top_p: 0.95,
+                        do_sample: true,
+                        return_full_text: false
+                    }
+                })
+            }
+        );
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Erreur API:', errorText);
+            throw new Error(`Erreur ${response.status}: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        console.log('📥 Réponse reçue:', data);
+        
+        // Extraire le texte généré
+        if (Array.isArray(data) && data[0]?.generated_text) {
+            return data[0].generated_text;
+        } else if (data.generated_text) {
+            return data.generated_text;
+        } else if (typeof data === 'string') {
+            return data;
+        }
+        
+        throw new Error('Format de réponse inattendu');
+        
+    } catch (error) {
+        console.error('❌ Erreur Hugging Face:', error);
+        throw error;
+    }
+}
+
+// ============================================
+// 3. NETTOYAGE DES RÉPONSES
+// ============================================
+
+/**
+ * Nettoie la réponse de l'IA
+ * @param {string} reponse - Réponse brute
+ * @returns {string} Réponse nettoyée
+ */
+function nettoyerReponse(reponse) {
+    let cleaned = reponse.trim();
+    
+    // Retirer les balises de modèle
+    cleaned = cleaned.replace(/\[INST\]|\[\/INST\]|<s>|<\/s>/g, '');
+    
+    // Retirer les instructions système répétées
+    cleaned = cleaned.replace(/^(Tu es|You are).*?\n\n/s, '');
+    
+    // Limiter à 5 lignes maximum
+    const lines = cleaned.split('\n').filter(l => l.trim());
+    if (lines.length > 5) {
+        cleaned = lines.slice(0, 5).join('\n');
+    }
+    
+    return cleaned.trim();
+}
+
+// ============================================
+// 4. MESSAGE DE DEBUG
+// ============================================
+
+console.log(`
+╔═══════════════════════════════════════╗
+║     🤖 MODULE IA CHARGÉ              ║
+║   Provider: ${API_CONFIG.provider}        ║
+╚═══════════════════════════════════════╝
+`);
