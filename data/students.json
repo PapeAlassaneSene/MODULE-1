@@ -1,6 +1,6 @@
 {
-  "etablissement": "Votre École",
-  "annee": "2024-2025",
+  "etablissement": "Sup Management  idntelligensia",
+  "annee": "2025-2026",
   "etudiants": [
     {
       "id": 1,
@@ -30,11 +30,11 @@
     },
     {
       "id": 2,
-      "nom": "VOTRE_NOM",
-      "prenom": "VOTRE_PRENOM",
+      "nom": "SENE",
+      "prenom": "Pape Alassane",
       "age": 21,
-      "filiere": "VOTRE_FILIERE",
-      "niveau": "Licence 2",
+      "filiere": "Informatique",
+      "niveau": "Licence 3",
       "photo": "👩‍💻",
       "personnalite": {
         "traits": ["trait1", "trait2", "trait3"],
