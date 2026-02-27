@@ -190,3 +190,85 @@ function genererPromptComplet(question, contexte, mode) {
     
     return prompt;
 }
+// ============================================
+// 6. RAG (RETRIEVAL AUGMENTED GENERATION)
+// ============================================
+
+/**
+ * Récupère les informations pertinentes selon la question
+ * @param {string} question - Question de l'utilisateur
+ * @returns {Object} Contexte pertinent
+ */
+function recupererContexte(question) {
+    if (!donneesChargees()) {
+        return null;
+    }
+    
+    const intent = interpreterQuestion(question);
+    let contexte = {
+        etablissement: studentsData.etablissement,
+        totalEtudiants: studentsData.stats.totalEtudiants
+    };
+    
+    // Informations sur un étudiant spécifique
+    if (intent.nom) {
+        const etudiants = rechercherEtudiant(intent.nom);
+        if (etudiants.length > 0) {
+            contexte.etudiant = etudiants[0];
+        }
+    }
+    
+    // Événements
+    if (question.toLowerCase().includes('événement') || 
+        question.toLowerCase().includes('hackathon')) {
+        contexte.dernierEvenement = dernierEvenement();
+    }
+    
+    // Potins
+    if (question.toLowerCase().includes('potin') || 
+        question.toLowerCase().includes('gossip')) {
+        contexte.potin = potinAleatoire();
+    }
+    
+    // Statistiques
+    if (intent.type === 'statistiques') {
+        contexte.stats = calculerStatistiques();
+    }
+    
+    return contexte;
+}
+
+/**
+ * Génère une réponse avec IA et RAG
+ * @param {string} question - Question de l'utilisateur
+ * @param {string} mode - Mode de réponse
+ * @returns {Promise<string>} Réponse générée
+ */
+async function genererReponseIA(question, mode = 'naturel') {
+    try {
+        // 1. Récupérer le contexte pertinent (RAG)
+        const contexte = recupererContexte(question);
+        
+        // 2. Générer le prompt
+        const prompt = genererPromptComplet(question, contexte, mode);
+        
+        console.log('📝 Prompt généré:', prompt.substring(0, 200) + '...');
+        
+        // 3. Appeler l'API
+        const reponseIA = await appelHuggingFace(prompt);
+        
+        // 4. Nettoyer la réponse
+        const reponseFinale = nettoyerReponse(reponseIA);
+        
+        console.log('✅ Réponse finale:', reponseFinale);
+        
+        return reponseFinale;
+        
+    } catch (error) {
+        console.error('Erreur génération IA:', error);
+        
+        // Fallback : réponse d'erreur
+        return "Oups ! 🤖 L'IA rencontre un petit problème. " +
+               "Vérifie ta connexion ou réessaie dans un instant.";
+    }
+}
