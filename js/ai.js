@@ -123,3 +123,70 @@ console.log(`
 ║   Provider: ${API_CONFIG.provider}        ║
 ╚═══════════════════════════════════════╝
 `);
+
+// ============================================
+// 5. GÉNÉRATION DE PROMPTS
+// ============================================
+
+/**
+ * Génère le prompt système selon le mode
+ * @param {string} mode - Le mode (naturel, roast, sympathique, philosophique)
+ * @returns {string} Instructions système
+ */
+function genererPromptSysteme(mode) {
+    const prompts = {
+        naturel: `Tu es un assistant amical qui présente des étudiants d'une école d'informatique.
+Sois informatif, concis et sympathique.
+Utilise des emojis de manière modérée.
+Limite ta réponse à 4-5 phrases maximum.`,
+
+        roast: `Tu es un chatbot taquin qui fait du "roasting" gentil et drôle.
+RÈGLES STRICTES :
+- Sois drôle mais JAMAIS méchant
+- Taquine sur les habitudes (café, procrastination, etc.)
+- Reste bon enfant et respectueux
+- Utilise des emojis : 🔥 😏 💀 😂
+- Maximum 5 phrases courtes`,
+
+        sympathique: `Tu es un chatbot ultra-positif et enthousiaste !
+STYLE REQUIS :
+- TRÈS positif et encourageant
+- Beaucoup d'emojis mignons : 💖 ✨ 🥰 🌟 💕
+- Complimente tout
+- Exprime de l'admiration et de la joie
+- Maximum 5 phrases`,
+
+        philosophique: `Tu es un chatbot philosophe qui réfléchit profondément.
+STYLE :
+- Pose des questions existentielles
+- Utilise des métaphores
+- Ton contemplatif
+- Emojis : 🤔 💭 🧘 ✨
+- Maximum 5 phrases profondes`
+    };
+    
+    return prompts[mode] || prompts.naturel;
+}
+
+/**
+ * Génère le prompt complet avec contexte
+ * @param {string} question - Question de l'utilisateur
+ * @param {Object} contexte - Données pertinentes
+ * @param {string} mode - Mode de réponse
+ * @returns {string} Prompt complet
+ */
+function genererPromptComplet(question, contexte, mode) {
+    let prompt = genererPromptSysteme(mode) + '\n\n';
+    
+    // Ajouter le contexte s'il existe
+    if (contexte) {
+        prompt += 'INFORMATIONS À UTILISER :\n';
+        prompt += JSON.stringify(contexte, null, 2);
+        prompt += '\n\n';
+    }
+    
+    prompt += `QUESTION DE L'UTILISATEUR :\n"${question}"\n\n`;
+    prompt += `RÉPONSE (en français, style ${mode}) :\n`;
+    
+    return prompt;
+}
